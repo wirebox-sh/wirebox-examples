@@ -67,9 +67,6 @@ uv run wirebox-browser-use "Sign up on linear.app with my email and wait for con
 # Run in headless mode (no GUI window)
 uv run wirebox-browser-use --headless "Create an account on example.com"
 
-# Specify a custom human oversight email for auto-signup
-uv run wirebox-browser-use --human-email user@example.com "Sign up for a service"
-
 # Increase or decrease maximum execution steps
 uv run wirebox-browser-use --steps 60 "Complete a multi-page registration"
 
