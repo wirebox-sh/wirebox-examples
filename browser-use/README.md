@@ -46,16 +46,15 @@ BROWSER_USE_API_KEY=...       # Browser Use Cloud (model: bu-2-0)
 ### 3. Run the Autonomous Agent
 
 ```bash
-# Example: Autonomously sign up on Firecrawl and extract the API key
-uv run wirebox-browser-use "Go to firecrawl.dev, sign up for a free account with my Wirebox email, verify the OTP code, and copy the API key"
+# Example: Autonomously sign in to Notion using Wirebox email verification
+uv run wirebox-browser-use "Go to notion.com, sign in with my email, wait for the verification code, and log in"
 ```
 
 The agent will:
 1. Launch Chromium (visible window so you can watch it work).
-2. Navigate to `firecrawl.dev` and fill in the signup form using its Wirebox address.
-3. Call `wait_for_email(subject_contains="verification")` to receive the 6-digit code.
-4. Enter the verification code into the web page.
-5. Go to the dashboard, copy the API key, and return it directly to your terminal!
+2. Navigate to `notion.com` and fill in the form using its Wirebox address.
+3. Call `wait_for_email` to receive the 6-digit code.
+4. Enter the verification code into the page and complete login!
 
 ---
 
@@ -78,7 +77,7 @@ uv run wirebox-browser-use --steps 60 "Complete a multi-page registration"
 uv run wirebox-browser-use --setup-window
 
 # Keep browser window open after task finishes (great for demo recording & inspection)
-uv run wirebox-browser-use --browser-stay-open "Sign up on resend.com/signup"
+uv run wirebox-browser-use --browser-stay-open "Go to notion.com, sign in with my email, wait for the verification code, and log in"
 ```
 
 ---
