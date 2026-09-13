@@ -10,7 +10,6 @@ Official examples and recipes for building autonomous AI agents with [Wirebox](h
 
 - **Website**: [https://wirebox.sh](https://wirebox.sh)
 - **Documentation**: [https://docs.wirebox.sh](https://docs.wirebox.sh)
-- **Console**: [https://wirebox.sh/console](https://wirebox.sh/console)
 
 ## License
 

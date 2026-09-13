@@ -37,7 +37,7 @@ BROWSER_USE_API_KEY=...       # Browser Use Cloud (model: bu-2-0)
 # or OPENAI_API_KEY=sk-...    # OpenAI (model: gpt-4o)
 # or ANTHROPIC_API_KEY=sk-... # Anthropic (model: claude-3-5-sonnet)
 
-# Optional: If you already have a Wirebox identity from https://wirebox.sh/console:
+# Optional: If you already have a Wirebox identity from Wirebox:
 # WIREBOX_API_KEY=wb_live_...
 # WIREBOX_EMAIL=agent-xyz@wireboxmail.com
 ```
@@ -103,5 +103,4 @@ src/
 
 - **Wirebox Website**: [https://wirebox.sh](https://wirebox.sh)
 - **Documentation**: [https://docs.wirebox.sh](https://docs.wirebox.sh)
-- **Console**: [https://wirebox.sh/console](https://wirebox.sh/console)
 - **Browser Use**: [https://github.com/browser-use/browser-use](https://github.com/browser-use/browser-use)
