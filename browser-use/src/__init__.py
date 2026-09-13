@@ -1,6 +1,6 @@
 """Wirebox + Browser Use Integration.
 
-Enables autonomous web agents with sovereign Wirebox email inboxes for seamless
+Enables autonomous web agents with Wirebox email inboxes for seamless
 account signups, email OTP verification, and outbound communication.
 """
 

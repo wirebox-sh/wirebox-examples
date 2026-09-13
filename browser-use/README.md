@@ -1,6 +1,6 @@
 # Wirebox + Browser Use
 
-Equip your [Browser Use](https://browser-use.com) AI agent with a **sovereign, real-world Wirebox email address**.
+Equip your [Browser Use](https://browser-use.com) AI agent with a **real Wirebox email address**.
 
 Autonomous web agents often get stopped cold by email verification walls (6-digit OTP codes or magic links). **Wirebox** gives your browser agents real inboxes (`@wireboxmail.com`) and clean API tools so they can register for services, verify OTP codes, and extract API keys completely autonomously.
 

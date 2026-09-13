@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "wirebox-browser-use"
 version = "0.1.0"
-description = "Autonomous browser automation with sovereign Wirebox email identities"
+description = "Autonomous browser automation with Wirebox email inboxes"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }

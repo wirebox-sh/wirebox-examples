@@ -21,12 +21,12 @@ logger = logging.getLogger("wirebox-cli")
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Wirebox + Browser Use: Autonomous web agent with sovereign email inboxes.",
+        description="Wirebox + Browser Use: Autonomous web agent with email inboxes.",
     )
     parser.add_argument(
         "task",
         nargs="?",
-        default="Go to firecrawl.dev, sign up for a free account using my Wirebox email, verify the OTP code, and fetch the API key.",
+        default="Go to notion.com, sign in with my email, wait for the verification code, and log in",
         help="The natural language task for the agent to execute.",
     )
     parser.add_argument(

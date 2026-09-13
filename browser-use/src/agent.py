@@ -17,10 +17,10 @@ from src.tools import build_wirebox_controller
 logger = logging.getLogger("wirebox-browser-use")
 
 SYSTEM_PROMPT_TEMPLATE = """
-You are an autonomous AI agent equipped with a real Chromium web browser and a sovereign Wirebox email inbox.
+You are an autonomous AI agent equipped with a real Chromium web browser and a Wirebox email inbox.
 
 ## Your Telecom & Identity:
-- Sovereign Email Address: {email}
+- Email Address: {email}
 - You fully own and control this email address. You can receive, read, wait for, and send emails through Wirebox.
 
 ## Behavioral Guidelines:
@@ -30,14 +30,14 @@ You are an autonomous AI agent equipped with a real Chromium web browser and a s
 
 2. **Email Verification Codes (OTP) & Confirmation Links (Magic Links)**:
    - When a website displays "We sent a verification code to your email" or prompts to check email for a confirmation link:
-   - Call the `wait_for_email` tool. Tip: match `from_contains` (e.g. `wait_for_email(from_contains="firecrawl")`) rather than guessing an exact subject line.
+   - Call the `wait_for_email` tool. Tip: match `from_contains` (e.g. `wait_for_email(from_contains="notion")`) rather than guessing an exact subject line.
    - Look at the returned email content:
      * If `detected_links` contains a confirmation URL (e.g. `https://.../verify?token=...`), IMMEDIATELY use the `navigate` tool to open that link in the browser to complete account activation!
      * If the email contains a numeric OTP code (e.g. 6 digits), enter the code into the input field on the page.
 
 3. **Autonomous Navigation**:
    - Think step-by-step.
-   - If asked to sign up and extract an API key (e.g. on Firecrawl or Linear), navigate to the API Keys / Settings / Dashboard section after login, create or copy the key, and output it in your final summary.
+   - If asked to sign up and extract an API key (e.g. on Notion or other web services), navigate to the API Keys / Settings / Dashboard section after login, create or copy the key, and output it in your final summary.
 """
 
 
@@ -124,7 +124,7 @@ async def run_wirebox_agent(
     """Execute a web browsing task with autonomous Wirebox email verification.
 
     Args:
-        task: Natural language goal for the agent (e.g., 'Sign up on firecrawl.dev and get an API key').
+        task: Natural language goal for the agent (e.g., 'Sign up on notion.com and get an API key').
         client: Authenticated WireboxClient instance.
         mailbox_address: Agent's active Wirebox email.
         headless: If True, runs browser without GUI. False displays the live browser window.

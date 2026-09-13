@@ -30,7 +30,7 @@ class WaitForEmailArgs(BaseModel):
     )
     from_contains: str | None = Field(
         default=None,
-        description="Substring or keyword to match sender address or name (e.g. 'noreply@firecrawl.dev').",
+        description="Substring or keyword to match sender address or name (e.g. 'notion.com').",
     )
     timeout_seconds: int = Field(
         default=45,
@@ -92,7 +92,7 @@ def build_wirebox_controller(
     controller = Controller()
 
     @controller.registry.action(
-        "Get the agent's sovereign Wirebox email address",
+        "Get the agent's Wirebox email address",
         param_model=GetAgentEmailArgs,
     )
     async def get_agent_email(params: GetAgentEmailArgs) -> ActionResult:
