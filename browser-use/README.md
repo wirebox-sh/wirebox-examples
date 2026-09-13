@@ -73,9 +73,6 @@ uv run wirebox-browser-use --human-email user@example.com "Sign up for a service
 # Increase or decrease maximum execution steps
 uv run wirebox-browser-use --steps 60 "Complete a multi-page registration"
 
-# Pre-position & resize your browser layout before recording
-uv run wirebox-browser-use --setup-window
-
 # Keep browser window open after task finishes (great for demo recording & inspection)
 uv run wirebox-browser-use --browser-stay-open "Go to notion.com, sign in with my email, wait for the verification code, and log in"
 ```
