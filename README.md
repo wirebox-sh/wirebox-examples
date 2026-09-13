@@ -4,11 +4,11 @@ Official examples and recipes for building autonomous AI agents with [Wirebox](h
 
 ## Examples
 
-- [**browser-use**](./browser-use): Autonomous web signup (Notion) and OTP verification with [Browser Use](https://browser-use.com).
+- [**browser-use**](./browser-use): Autonomous web signup (Notion) and email verification (OTP & magic links) with [Browser Use](https://browser-use.com).
 
 ## Quickstart (`browser-use`)
 
-The [`browser-use`](./browser-use) example demonstrates an autonomous browser agent that registers on web services (e.g. Notion) by reading its own Wirebox email inbox to bypass 6-digit OTP verification walls.
+The [`browser-use`](./browser-use) example demonstrates an autonomous browser agent that registers on web services (e.g. Notion) by reading its own Wirebox email inbox to handle OTP codes and magic links.
 
 ```bash
 git clone https://github.com/wirebox-sh/wirebox-examples.git

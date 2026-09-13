@@ -2,7 +2,7 @@
 
 Equip your [Browser Use](https://browser-use.com) AI agent with a **real Wirebox email address**.
 
-Autonomous web agents often get stopped cold by email verification walls (6-digit OTP codes or magic links). **Wirebox** gives your browser agents real inboxes (`@wireboxmail.com`) and clean API tools so they can register for services, verify OTP codes, and extract API keys completely autonomously.
+Autonomous web agents often get stopped cold by email verification walls (OTP codes, magic links, or confirmation emails). **Wirebox** gives your browser agents real inboxes (`@wireboxmail.com`) and clean API tools so they can register for services, handle OTP codes and magic links, and complete workflows completely autonomously.
 
 ---
 
@@ -53,7 +53,7 @@ uv run wirebox-browser-use "Go to notion.com, sign in with my email, wait for th
 The agent will:
 1. Launch Chromium (visible window so you can watch it work).
 2. Navigate to `notion.com` and fill in the form using its Wirebox address.
-3. Call `wait_for_email` to receive the 6-digit code.
+3. Call `wait_for_email` to receive the verification code or magic link.
 4. Enter the verification code into the page and complete login!
 
 ---
