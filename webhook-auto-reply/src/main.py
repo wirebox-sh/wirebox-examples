@@ -107,7 +107,7 @@ async def main() -> None:
             print("\n   \033[32m✓ Webhook Received & Cryptographically Verified!\033[0m")
             print(f"     • Event Type:  {event_type}")
             print(f"     • Event ID:    {envelope.get('id')}")
-            print(f"     • From:        {message.get('from_address')}")
+            print(f"     • From:        {message.get('from') or message.get('from_address')}")
             print(f"     • Subject:     \"{message.get('subject')}\"")
 
             if (
