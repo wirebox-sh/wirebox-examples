@@ -136,6 +136,8 @@ async def main() -> None:
             return web.json_response({"success": True})
 
         app = web.Application()
+        app.router.add_get("/", lambda req: web.Response(text="Wirebox Tunnel Webhook Receiver OK"))
+        app.router.add_get("/webhook", lambda req: web.Response(text="Wirebox Webhook Endpoint OK"))
         app.router.add_post("/webhook", handle_webhook)
 
         runner = web.AppRunner(app)
