@@ -72,8 +72,15 @@ WIREBOX_API_KEY=wb_live_xxxxxxxxxxxxxxxxxxxxxxxx
 
 ### 3. Run the Demonstration
 
+#### Option A: TypeScript / Node.js
 ```bash
 npm start
+```
+
+#### Option B: Python (3.11+)
+```bash
+cd python
+uv run python main.py
 ```
 
 You will see live logs as each stage executes:
