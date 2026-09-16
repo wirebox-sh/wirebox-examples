@@ -786,7 +786,7 @@ wheels = [
 [[package]]
 name = "wirebox"
 version = "0.1.0"
-source = { editable = "../../../../wirebox-python" }
+source = { editable = "../../../wirebox-python" }
 dependencies = [
     { name = "httpx" },
     { name = "websockets" },
@@ -804,7 +804,7 @@ requires-dist = [
 provides-extras = ["dev"]
 
 [[package]]
-name = "wirebox-webhook-auto-reply-python"
+name = "wirebox-webhook-auto-reply"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
@@ -817,7 +817,7 @@ dependencies = [
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.9.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "wirebox", editable = "../../../../wirebox-python" },
+    { name = "wirebox", editable = "../../../wirebox-python" },
 ]
 
 [[package]]

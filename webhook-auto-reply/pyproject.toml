@@ -3,9 +3,9 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "wirebox-webhook-auto-reply-python"
+name = "wirebox-webhook-auto-reply"
 version = "0.1.0"
-description = "End-to-end inbound email webhook example with Wirebox Tunnel, HMAC verification, and auto-reply in Python"
+description = "Autonomous inbound email webhook receiver and auto-reply agent in Python"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -15,11 +15,14 @@ dependencies = [
     "python-dotenv>=1.0.1",
 ]
 
+[project.scripts]
+webhook-auto-reply = "src.main:run"
+
 [tool.hatch.build.targets.wheel]
-packages = ["."]
+packages = ["src"]
 
 [tool.uv.sources]
-wirebox = { path = "../../../../wirebox-python", editable = true }
+wirebox = { path = "../../../wirebox-python", editable = true }
 
 [tool.ruff]
 line-length = 100
@@ -27,5 +30,3 @@ target-version = "py311"
 
 [tool.ruff.lint]
 ignore = ["BLE001"]
-
-
