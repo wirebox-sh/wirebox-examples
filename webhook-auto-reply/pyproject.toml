@@ -22,7 +22,7 @@ webhook-auto-reply = "src.main:run"
 packages = ["src"]
 
 [tool.uv.sources]
-wirebox = { path = "../../../wirebox-python", editable = true }
+wirebox = { path = "../../wirebox-python", editable = true }
 
 [tool.ruff]
 line-length = 100
