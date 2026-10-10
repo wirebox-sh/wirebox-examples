@@ -1,0 +1,15 @@
+{
+  "name": "use-wirebox-vault",
+  "private": true,
+  "type": "module",
+  "description": "Wirebox Vault TOTP login example",
+  "scripts": {
+    "start": "tsx agent-totp.ts"
+  },
+  "dependencies": {
+    "@wirebox-sh/sdk": "file:../../wirebox-typescript-vault"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}
