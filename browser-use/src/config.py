@@ -12,6 +12,7 @@ class Settings:
     wirebox_api_key: str = os.getenv("WIREBOX_API_KEY", "").strip()
     wirebox_email: str = os.getenv("WIREBOX_EMAIL", "").strip()
     wirebox_api_url: str = os.getenv("WIREBOX_API_URL", "https://api.wirebox.sh/v1").rstrip("/")
+    wirebox_vault_key: str = os.getenv("WIREBOX_VAULT_KEY", "").strip()
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "").strip()
     openai_api_base: str = os.getenv("OPENAI_API_BASE", os.getenv("OPENAI_BASE_URL", "")).strip()
     anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "").strip()

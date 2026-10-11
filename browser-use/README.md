@@ -56,6 +56,35 @@ The agent will:
 3. Call `wait_for_email` to receive the verification code or magic link.
 4. Enter the verification code into the page and complete login!
 
+### Logging in with vault credentials (including 2FA)
+
+Set `WIREBOX_VAULT_KEY` and the agent also gets `get_vault_login` and
+`get_vault_totp_code` tools — it can sign in to a site using a stored login and
+its TOTP two-factor code.
+
+First store a login with TOTP (via the Console or CLI) and grant it to this
+identity. For a reliable, public demo target you can use
+[authenticationtest.com](https://authenticationtest.com/totpChallenge/) — a test
+account whose credentials and TOTP secret are public:
+
+```bash
+wirebox vault add --type login --name authenticationtest \
+  --email totp@authenticationtest.com --password 'pa$$w0rd' \
+  --url https://authenticationtest.com/totpChallenge/ \
+  --totp-uri "otpauth://totp/authenticationtest?secret=I65VU7K5ZQL7WB4E"
+```
+
+Then run the agent against it:
+
+```bash
+WIREBOX_VAULT_KEY=WBV-... uv run wirebox-browser-use --browser-stay-open \
+  "Go to https://authenticationtest.com/totpChallenge/ and log in using the 'authenticationtest' login from my vault, including the current 2FA code. Confirm you reach the success page."
+```
+
+The agent fetches the username and password with `get_vault_login`, submits
+them, generates the live 2FA code with `get_vault_totp_code`, enters it, and
+reaches the success page — all without the credentials ever being hard-coded.
+
 ---
 
 ## 💻 CLI Usage & Options
@@ -96,6 +125,10 @@ src/
 | `check_inbox` | `limit` | Lists recent inbound and outbound emails with subject, snippet, and message IDs. |
 | `read_email` | `message_id` | Fetches the full plain-text and HTML body of a specific email. |
 | `send_email` | `to`, `subject`, `body_text` | Sends an outbound email directly from the agent's identity. |
+| `get_vault_login`¹ | `name` | Fetches a stored login (username/email, password, URL) from the encrypted vault. |
+| `get_vault_totp_code`¹ | `name` | Generates the current TOTP (2FA) code for a stored login. |
+
+¹ Available only when `WIREBOX_VAULT_KEY` is set.
 
 ---
 

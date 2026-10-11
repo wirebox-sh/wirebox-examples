@@ -10,9 +10,18 @@ from langchain_anthropic import ChatAnthropic
 from browser_use.agent import Agent
 from browser_use.browser import BrowserSession
 
+from wirebox import AsyncWirebox
+
 from src.client import WireboxClient
 from src.config import settings
 from src.tools import build_wirebox_controller
+
+VAULT_PROMPT = """
+
+## Encrypted Vault (Credentials & 2FA):
+- You have access to an encrypted credential vault. Use `get_vault_login` to fetch a stored login (username/email, password, URL) by its secret name, and `get_vault_totp_code` to generate the current 2FA code for it.
+- When a site asks you to log in and you were told to use a stored credential, call `get_vault_login(name=...)`, type the username/email and password, and submit.
+- If the site then asks for a 2FA / authenticator code, call `get_vault_totp_code(name=...)` and enter the returned code promptly (it rotates every 30 seconds)."""
 
 logger = logging.getLogger("wirebox-browser-use")
 
@@ -136,11 +145,27 @@ async def run_wirebox_agent(
     """
     logger.info("Initializing Wirebox agent for %s", mailbox_address)
 
-    # 1. Build Controller with Wirebox email actions
-    controller = build_wirebox_controller(client, mailbox_address)
+    # 1. Optionally unlock the vault to give the agent credential + 2FA tools.
+    sdk: AsyncWirebox | None = None
+    vault: Any = None
+    if settings.wirebox_vault_key:
+        origin = settings.wirebox_api_url.removesuffix("/v1").rstrip("/")
+        sdk = AsyncWirebox(api_key=settings.wirebox_api_key, base_url=origin)
+        try:
+            vault = await sdk.vault.unlock(settings.wirebox_vault_key)
+            logger.info("Vault unlocked; credential tools enabled")
+        except Exception as err:  # noqa: BLE001
+            logger.warning("Vault unlock failed (%s); continuing without vault tools", err)
+            await sdk.aclose()
+            sdk = None
 
-    # 2. Build system prompt with agent's real email
+    # 2. Build Controller with Wirebox email (and, if unlocked, vault) actions
+    controller = build_wirebox_controller(client, mailbox_address, vault=vault)
+
+    # 3. Build system prompt with agent's real email (and vault guidance if enabled)
     system_prompt = SYSTEM_PROMPT_TEMPLATE.format(email=mailbox_address)
+    if vault is not None:
+        system_prompt += VAULT_PROMPT
 
     # 3. Configure browser session with persistent profile for window position memory
     profile_dir = os.path.expanduser("~/.cache/wirebox/browser-profile")
@@ -181,6 +206,8 @@ async def run_wirebox_agent(
         final_text = history.final_result() or "Task completed."
         return final_text
     finally:
+        if sdk is not None:
+            await sdk.aclose()
         if not browser_stay_open:
             await browser_session.close()
         else:

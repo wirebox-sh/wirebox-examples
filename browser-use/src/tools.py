@@ -54,6 +54,12 @@ class GetAgentEmailArgs(BaseModel):
     pass
 
 
+class VaultSecretArgs(BaseModel):
+    name: str = Field(
+        description="Name of the stored secret in the vault (e.g. 'authenticationtest', 'GitHub').",
+    )
+
+
 import re
 
 
@@ -87,8 +93,13 @@ def _format_message_content(msg: dict[str, Any]) -> dict[str, Any]:
 def build_wirebox_controller(
     client: WireboxClient,
     mailbox_address: str,
+    vault: Any = None,
 ) -> Controller:
-    """Construct a Browser Use Controller equipped with Wirebox email capabilities."""
+    """Construct a Browser Use Controller equipped with Wirebox email capabilities.
+
+    When ``vault`` (an unlocked Wirebox vault) is provided, the agent also gets
+    credential tools: it can fetch stored logins and generate TOTP (2FA) codes.
+    """
     controller = Controller()
 
     @controller.registry.action(
@@ -177,5 +188,41 @@ def build_wirebox_controller(
             )
         except Exception as err:
             return ActionResult(error=f"Failed to send email: {str(err)}")
+
+    if vault is not None:
+
+        @controller.registry.action(
+            "Get a stored login (username, email, password, URL) from the encrypted vault by secret name",
+            param_model=VaultSecretArgs,
+        )
+        async def get_vault_login(params: VaultSecretArgs) -> ActionResult:
+            try:
+                login = vault.get_login(params.name)
+            except Exception as err:
+                return ActionResult(error=f"No login named '{params.name}' in the vault: {err}")
+            details = {
+                "username": login.username,
+                "email": login.email,
+                "password": login.password,
+                "url": login.service_url,
+                "has_totp": login.totp is not None,
+            }
+            return ActionResult(
+                extracted_content=json.dumps(details),
+                long_term_memory=f"Fetched vault login '{params.name}'",
+            )
+
+        @controller.registry.action(
+            "Generate the current TOTP (2FA) one-time code for a stored login by secret name",
+            param_model=VaultSecretArgs,
+        )
+        async def get_vault_totp_code(params: VaultSecretArgs) -> ActionResult:
+            try:
+                code = vault.get_totp_code(params.name)
+            except Exception as err:
+                return ActionResult(error=f"Could not generate a 2FA code for '{params.name}': {err}")
+            return ActionResult(
+                extracted_content=f"Current 2FA code for '{params.name}': {code.code} (valid {code.expires_in_seconds}s)",
+            )
 
     return controller
