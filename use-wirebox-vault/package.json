@@ -7,7 +7,7 @@
     "start": "tsx agent-totp.ts"
   },
   "dependencies": {
-    "@wirebox-sh/sdk": "file:../../wirebox-typescript-vault"
+    "@wirebox-sh/sdk": "^0.8.0"
   },
   "devDependencies": {
     "tsx": "^4.19.0"
