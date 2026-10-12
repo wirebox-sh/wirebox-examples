@@ -62,10 +62,17 @@ Set `WIREBOX_VAULT_KEY` and the agent also gets `get_vault_login` and
 `get_vault_totp_code` tools — it can sign in to a site using a stored login and
 its TOTP two-factor code.
 
-First store a login with TOTP (via the Console or CLI) and grant it to this
-identity. For a reliable, public demo target you can use
+First store a login with TOTP and **grant it to the identity this agent runs
+as** (the one whose `WIREBOX_API_KEY` is in your `.env`). For a reliable, public
+demo target you can use
 [authenticationtest.com](https://authenticationtest.com/totpChallenge/) — a test
-account whose credentials and TOTP secret are public:
+account whose credentials and TOTP secret are public.
+
+> **Two things must line up or the agent gets a 404 when it reads the vault:**
+> 1. The secret **name** must match the name in your task prompt (`authenticationtest` below).
+> 2. The secret must be **granted** to the identity whose API key the agent uses.
+
+**Option A — CLI** (stores and grants to the current API key's identity in one step):
 
 ```bash
 wirebox vault add --type login --name authenticationtest \
@@ -73,6 +80,20 @@ wirebox vault add --type login --name authenticationtest \
   --url https://authenticationtest.com/totpChallenge/ \
   --totp-uri "otpauth://totp/authenticationtest?secret=I65VU7K5ZQL7WB4E"
 ```
+
+**Option B — Console** ([wirebox.sh](https://wirebox.sh) → Vault → unlock → **New secret**):
+
+| Field | Value |
+| :--- | :--- |
+| **Grant access** | ✅ check the identity whose `WIREBOX_API_KEY` the agent uses |
+| **Name** | `authenticationtest` |
+| **Type** | Login |
+| **Email** | `totp@authenticationtest.com` |
+| **Password** | `pa$$w0rd` |
+| **URL** | `https://authenticationtest.com/totpChallenge/` |
+| **TOTP** | paste `otpauth://totp/authenticationtest?secret=I65VU7K5ZQL7WB4E` into the `otpauth://` field (or upload the QR) |
+
+Leave Username blank — this site logs in by email. Click **Save**.
 
 Then run the agent against it:
 
