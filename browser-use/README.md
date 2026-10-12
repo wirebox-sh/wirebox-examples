@@ -56,6 +56,56 @@ The agent will:
 3. Call `wait_for_email` to receive the verification code or magic link.
 4. Enter the verification code into the page and complete login!
 
+### Logging in with vault credentials (including 2FA)
+
+Set `WIREBOX_VAULT_KEY` and the agent also gets `get_vault_login` and
+`get_vault_totp_code` tools — it can sign in to a site using a stored login and
+its TOTP two-factor code.
+
+First store a login with TOTP and **grant it to the identity this agent runs
+as** (the one whose `WIREBOX_API_KEY` is in your `.env`). For a reliable, public
+demo target you can use
+[authenticationtest.com](https://authenticationtest.com/totpChallenge/) — a test
+account whose credentials and TOTP secret are public.
+
+> **Two things must line up or the agent gets a 404 when it reads the vault:**
+> 1. The secret **name** must match the name in your task prompt (`authenticationtest` below).
+> 2. The secret must be **granted** to the identity whose API key the agent uses.
+
+**Option A — CLI** (stores and grants to the current API key's identity in one step):
+
+```bash
+wirebox vault add --type login --name authenticationtest \
+  --email totp@authenticationtest.com --password 'pa$$w0rd' \
+  --url https://authenticationtest.com/totpChallenge/ \
+  --totp-uri "otpauth://totp/authenticationtest?secret=I65VU7K5ZQL7WB4E"
+```
+
+**Option B — Console** ([wirebox.sh](https://wirebox.sh) → Vault → unlock → **New secret**):
+
+| Field | Value |
+| :--- | :--- |
+| **Grant access** | ✅ check the identity whose `WIREBOX_API_KEY` the agent uses |
+| **Name** | `authenticationtest` |
+| **Type** | Login |
+| **Email** | `totp@authenticationtest.com` |
+| **Password** | `pa$$w0rd` |
+| **URL** | `https://authenticationtest.com/totpChallenge/` |
+| **TOTP** | paste `otpauth://totp/authenticationtest?secret=I65VU7K5ZQL7WB4E` into the `otpauth://` field (or upload the QR) |
+
+Leave Username blank — this site logs in by email. Click **Save**.
+
+Then run the agent against it:
+
+```bash
+WIREBOX_VAULT_KEY=WBV-... uv run wirebox-browser-use --browser-stay-open \
+  "Go to https://authenticationtest.com/totpChallenge/ and log in using the 'authenticationtest' login from my vault, including the current 2FA code. Confirm you reach the success page."
+```
+
+The agent fetches the username and password with `get_vault_login`, submits
+them, generates the live 2FA code with `get_vault_totp_code`, enters it, and
+reaches the success page — all without the credentials ever being hard-coded.
+
 ---
 
 ## 💻 CLI Usage & Options
@@ -96,6 +146,10 @@ src/
 | `check_inbox` | `limit` | Lists recent inbound and outbound emails with subject, snippet, and message IDs. |
 | `read_email` | `message_id` | Fetches the full plain-text and HTML body of a specific email. |
 | `send_email` | `to`, `subject`, `body_text` | Sends an outbound email directly from the agent's identity. |
+| `get_vault_login`¹ | `name` | Fetches a stored login (username/email, password, URL) from the encrypted vault. |
+| `get_vault_totp_code`¹ | `name` | Generates the current TOTP (2FA) code for a stored login. |
+
+¹ Available only when `WIREBOX_VAULT_KEY` is set.
 
 ---
 
